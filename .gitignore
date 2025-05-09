@@ -17,6 +17,7 @@ buildNumber.properties
 Service-Registry/target/
 School-Service/target/
 Student-Service/target/
+API-Gateway/target
 **/bin/
 **/build/
 
