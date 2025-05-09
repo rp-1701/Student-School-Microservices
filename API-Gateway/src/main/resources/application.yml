@@ -1,0 +1,43 @@
+spring:
+  application:
+    name: API-GATEWAY
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: SCHOOL-SERVICE
+          uri: lb://SCHOOL-SERVICE
+          predicates:
+            - Path=/school/**
+          filters:
+            - RewritePath=/school/(?<segment>.*), /$\{segment}
+
+        - id: STUDENT-SERVICE
+          uri: lb://STUDENT-SERVICE
+          predicates:
+            - Path=/student/**
+          filters:
+            - RewritePath=/student/(?<segment>.*), /$\{segment}
+
+server:
+  port: 8080
+
+# Eureka Client Configuration
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+
+# Logging
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    reactor.netty: DEBUG
+    org.springframework.web.server.adapter.HttpWebHandlerAdapter: TRACE
+    org.springframework.web.gateway: DEBUG
